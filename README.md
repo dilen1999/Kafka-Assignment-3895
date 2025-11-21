@@ -31,10 +31,6 @@ It includes:
 
 ---
 
-## 📁 Project Structure
-
-
-
 
 ---
 
@@ -47,16 +43,10 @@ It includes:
 
 ---
 
-## 📑 REST API Endpoints
+## ▶️ Running the Project
 
-### **1. Send a Single Order**
-**POST** `/api/orders/send`
+### **1. Start Kafka (Docker method)**
 
-#### Request Body
-```json
-{
-  "orderId": "O-123",
-  "product": "Laptop",
-  "price": 85000
-}
-
+```bash
+docker-compose up -d --build
+```
