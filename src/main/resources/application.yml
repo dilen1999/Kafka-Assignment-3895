@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: kafka-order-system
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    # Producer Configuration
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      acks: all
+      retries: 3
+      properties:
+        schema.registry.url: http://localhost:8081
+        max.in.flight.requests.per.connection: 5
+        enable.idempotence: true
+
+    # Consumer Configuration
+    consumer:
+      group-id: order-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      properties:
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true
+
+    # Listener Configuration
+    listener:
+      ack-mode: manual
+
+# Custom Configuration
+kafka:
+  topics:
+    orders: orders-topic
+    orders-dlq: orders-dlq-topic
+    orders-retry: orders-retry-topic
+  consumer:
+    max-retry-attempts: 3
+    retry-delay-ms: 2000
